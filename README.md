@@ -1,14 +1,14 @@
 # SOCollections
 Unity tools for adding scriptable object asset files to other scriptable objects as child objects
 
-###Purpose
+### Purpose
 Scriptable Objects are incredibly useful for storing a variety of persistent data in Unity. Because of this, it's often desireable to have a scriptable hold references to other scriptable objects. However if you try to do this, you might notice that they will lose the reference after restarting the editor. This is because in order for the reference to stick, the scriptable object needs to be 'embedded' in the scriptable object that's referencing it. 
 
 This can be done with a editor method: AssetDatabase.AddObjectToAsset(), but it can be annoying to have to create an editor class just for this, and even if you do it can be a little tricky. The goal of this library is to supply some simple tools to make adding objects to assets easy.
 
 To use SOCollections just copy or clone the files into your project. There are two ways to use the tool:
 
-###Method 1
+### Method 1
 The simplest way to use this tool is to simply add a SOCollection variable to any ScriptableObject class that needs it, along with the appropriate using directive (using StellarDoor.SOCollection). This will show up like a list in the inspector. 
 
 *image
@@ -23,7 +23,7 @@ You can remove the objects by clicking the "X" next to that item. This will dele
 
 You can also replace an object that's already in the list, either by dragging or by using the object picker. If you do so the replaced item gets copied to a stand alone asset file, while the added item gets copied into the object.
 
-###Method 2
+### Method 2
 
 The second method is a little more complex, but can be a powerful way to create and manage groups of scriptable objects of the same type.
 
