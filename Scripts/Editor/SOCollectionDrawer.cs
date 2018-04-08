@@ -13,9 +13,7 @@ namespace StellarDoor.SOCollection
 
 		public override float GetPropertyHeight(SerializedProperty property, GUIContent label)
 		{
-			// Debug.Log(propHeight);
-			// Debug.Log(EditorGUI.GetPropertyHeight(property, label, true));
-			return propHeight; //EditorGUI.GetPropertyHeight(property, label, true); //
+			return propHeight;
 		}
 
 		public override void OnGUI(Rect position, SerializedProperty property, GUIContent label)
@@ -107,7 +105,7 @@ namespace StellarDoor.SOCollection
 			ScriptableObject copy = Editor.Instantiate(obj);
 			Editor.DestroyImmediate(obj, true);
 
-			//Make sure we have a reference to the main asset object in case this object was added to a nested SOCollector
+			//Make sure this is a reference to the main asset object in case this object was added to a nested SOCollector
 			Object mainObject = property.serializedObject.targetObject;
 			if (!AssetDatabase.IsMainAsset(mainObject))
 				mainObject = AssetDatabase.LoadMainAssetAtPath(AssetDatabase.GetAssetPath(property.serializedObject.targetObject));

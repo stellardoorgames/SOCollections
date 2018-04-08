@@ -18,6 +18,7 @@ MonoBehaviour:
   characters:
     collection:
     - {fileID: 114268600023255162}
+    - {fileID: 114095442079213408}
   stuff: 
   numbers: 5
 --- !u!114 &114019848709116346
