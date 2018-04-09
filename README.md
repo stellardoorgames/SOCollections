@@ -2,9 +2,9 @@
 Unity tools for adding scriptable objects to other scriptable objects as child objects
 
 ### Purpose
-Scriptable Objects are incredibly useful for storing a variety of persistent data in Unity. Because of this, it's often desireable to have a scriptable object hold references to other scriptable objects. However if you try to do this, you might notice that they will lose the reference after exiting the editor. This is because in order for the reference to stay valid, the scriptable object needs to be 'embedded' in the scriptable object that's referencing it. 
+Scriptable Objects are incredibly useful for storing a variety of persistent data in Unity. 
 
-This can be done with a editor method: AssetDatabase.AddObjectToAsset(), but it can be annoying to have to create an editor class just for this, and even if you do it can be a little tricky. The goal of this library is to supply some simple tools to make adding objects to assets easy.
+Scriptable Objects don't get loaded until referenced in the scene. This can cause problems if you're trying to locate an object by script that hasn't been loaded yet. For this reason, and simply for organization, it's often useful to group collections of scriptable objects together in one parent object that can be referenced. This can be done in the editor using AssetDatabase.AddObjectToAsset(), but it can be annoying to have to create an editor class just for this, and even if you do it can be a little tricky. The goal of this library is to supply some simple tools to make adding objects to assets easy.
 
 To use SOCollections just copy or clone the files into your project. There are two ways to use the tool:
 

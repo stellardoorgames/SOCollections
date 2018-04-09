@@ -9,7 +9,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: d216f1b3c496b104a93536a3ef19c89c, type: 3}
-  m_Name: New SO Collection Test
+  m_Name: New SO Collection Test 1
   m_EditorClassIdentifier: 
   inventory:
     collection: []
@@ -17,4 +17,3 @@ MonoBehaviour:
     collection: []
   stuff: 
   numbers: 5
-  test: {fileID: 11400000, guid: 4c31e8e4656504f4cbb4d3dd5f090b04, type: 2}
