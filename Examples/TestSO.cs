@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace StellarDoor.SOCollection.Examples
 {
-	[CreateAssetMenu]
+	//[CreateAssetMenu]
 	public class TestSO : ScriptableObject 
 	{
 		public string editMe = "";

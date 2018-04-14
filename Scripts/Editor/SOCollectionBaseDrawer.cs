@@ -5,16 +5,11 @@ using UnityEngine;
 
 namespace StellarDoor.SOCollection
 {
-	[CustomPropertyDrawer(typeof(SOCollection))]
-	public class SOCollectionDrawer : PropertyDrawer 
+	[CustomPropertyDrawer(typeof(SOCollectionBase), true)]
+	public class SOCollectionBaseDrawer : PropertyDrawer 
 	{
 		int listCount;
 		float propHeight = 22;
-
-		const float lineH = 20;
-		const float colA = 25;
-		const float pickW = 36;
-		const float space = 3;
 
 		public override float GetPropertyHeight(SerializedProperty property, GUIContent label)
 		{
@@ -24,55 +19,35 @@ namespace StellarDoor.SOCollection
 		public override void OnGUI(Rect position, SerializedProperty property, GUIContent label)
 		{
 			SerializedProperty collection = property.FindPropertyRelative("collection");
+			//Debug.Log(collection);
 
 			SerializedProperty listProp = collection.FindPropertyRelative("Array");
 			
-			float colB = position.width - colA - pickW;
-			Rect firstRect = new Rect(position.x, position.y, position.width - 90, lineH);
-
-			Rect addButRect = new Rect(position.width - 80, position.y, 35, lineH);
-			Rect cloneButRect = new Rect(position.width - 45, position.y, 45, lineH);
-
-			Rect butRect = new Rect(position.x, position.y + space, colA, lineH);
-			Rect nameRect = new Rect(position.x + colA, position.y + space, colB, lineH);
-			Rect listRect = new Rect(position.x + colA + colB, position.y + space, pickW, lineH);
+			float lineH = 20;
+			float colW = 25;
+			float space = 3;
+			Rect firstRect = new Rect(position.x, position.y, position.width - 40, lineH);
+			Rect addButRect = new Rect(position.width - colW, position.y, colW, lineH);
+			Rect butRect = new Rect(position.x, position.y + space, colW, lineH);
+			Rect listRect = new Rect(position.x + colW, position.y + space, position.width - colW, lineH);
 
 			EditorGUI.BeginChangeCheck();
 
-			EditorGUI.PropertyField(firstRect, collection, new GUIContent(property.name)); // + " - drop here"
+			EditorGUI.PropertyField(firstRect, collection, new GUIContent(property.name + " - drop asset here"));
 			
 			if (EditorGUI.EndChangeCheck() && listProp.arraySize > listCount)
 			{
 				//Object has been added to the list by dropping it on the property
 				collection.isExpanded = true;
 				ScriptableObject obj = listProp.GetArrayElementAtIndex(listCount).objectReferenceValue as ScriptableObject;
-				if (AssetDatabase.IsMainAsset(obj))
-					listProp.GetArrayElementAtIndex(listCount).objectReferenceValue = AddObject(obj, property);
-				else
-				{
-					listProp.GetArrayElementAtIndex(listCount).objectReferenceValue = null;
-					listProp.arraySize--;
-					Debug.LogWarning("Can't add an object that's already in a collection.");
-				}
+				listProp.GetArrayElementAtIndex(listCount).objectReferenceValue = AddObject(obj, property);
 			}
 
-			if (GUI.Button(addButRect, "Add"))
+			if (GUI.Button(addButRect, "+"))
 			{
 				//Add a null element to the end of the list
 				listProp.arraySize++;
 				listProp.GetArrayElementAtIndex(listProp.arraySize - 1).objectReferenceValue = null;
-			}
-
-			if (GUI.Button(cloneButRect, "Clone"))
-			{
-				//Add a duplicate element to the end of the list
-				Object newObj = (listProp.arraySize == 0) ? null : ScriptableObject.Instantiate(listProp.GetArrayElementAtIndex(listProp.arraySize - 1).objectReferenceValue);
-				
-				if (newObj != null)
-					newObj = AddObject(newObj as ScriptableObject, property);
-
-				listProp.arraySize++;
-				listProp.GetArrayElementAtIndex(listProp.arraySize - 1).objectReferenceValue = newObj;
 			}
 			
 			if (collection.isExpanded)
@@ -81,7 +56,6 @@ namespace StellarDoor.SOCollection
 				{
 					listRect.y += lineH;
 					butRect.y += lineH;
-					nameRect.y += lineH;
 					
 					var prop = listProp.FindPropertyRelative(string.Format("data[{0}]", i));
 
@@ -92,33 +66,12 @@ namespace StellarDoor.SOCollection
 					{
 						//Object is either being dropped into object element, 
 						//or object menu is being used to replace an object on the list
-						if (AssetDatabase.IsMainAsset(newObj))
-						{
-							if (oldObj != null)
-								RemoveObject(oldObj, property);
-
-							if (newObj != null)
-								prop.objectReferenceValue = AddObject(newObj, property);
-						}
-						else
-						{
-							prop.objectReferenceValue = oldObj;
-							Debug.LogWarning("Can't add an object that's already in a collection.");
-						}
+						if (oldObj != null)
+							RemoveObject(oldObj, property);
+						if (newObj != null)
+							prop.objectReferenceValue = AddObject(newObj, property);
 					}
-
-					EditorGUI.BeginChangeCheck();
-					if (prop.objectReferenceValue != null)
-						prop.objectReferenceValue.name = EditorGUI.DelayedTextField(nameRect, prop.objectReferenceValue.name);
-					else
-						EditorGUI.DelayedTextField(nameRect, "");
-
-					if (EditorGUI.EndChangeCheck())
-					{
-						AssetDatabase.SaveAssets();
-						AssetDatabase.Refresh();
-					}
-					
+			
 					if (GUI.Button(butRect, "X"))
 					{
 						//Object is being removed from the list

@@ -3,7 +3,7 @@ using StellarDoor.SOCollection;
 
 namespace StellarDoor.SOCollection.Examples
 {
-	[CreateAssetMenu]
+	//[CreateAssetMenu]
 	public class SOCollectionTest : ScriptableObject 
 	{
 		public SOCollection inventory;
